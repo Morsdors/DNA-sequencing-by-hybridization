@@ -42,17 +42,12 @@ if __name__ == '__main__':
         for ol1 in olis:
             if (ol[1:] == ol1[:-1]):
                 rep = rep + 1
-        #print(rep)
+
         reps.append(rep)
-    #print ("to byly repy")
-    # for rep in reps:
-    #     print =(rep)
-            
-    
-    #print(start)
+
     found = [start]
     
-    def search(found, olis, first):
+    def search(found, olis, first, reps):
         max = 0
         maxol = ""
         for ol, rep in zip(olis, reps):
@@ -64,26 +59,29 @@ if __name__ == '__main__':
                     maxol = ol
                 #print("max", max, "maxol", maxol)
         if(maxol != ""):
+            reps.remove(rep)
             found.append(maxol)
             olis.remove(maxol)
-            return found, olis, maxol
+            return found, olis, maxol, reps
         else:
             #print("nie znaleziono, wiec found[-1] -> found", found)
             olis.append(found[-1])
             found.remove(found[-1])
+            rep = 0
+            for ol1 in olis:
+                if (found[-1] == ol1[:-1]):
+                    rep = rep + 1 
+            reps.append(rep)
             return found, olis, first
 
     
-    found, olis, st = search(found, olis, start)
+    found, olis, st, reps = search(found, olis, start, reps)
     while(olis != []):
         #print(olis, st, found)
-        found, olis, st = search(found, olis, st)
+        found, olis, st, reps = search(found, olis, st, reps)
         
     
     answear = start
     for i in range(len(found)-1):
         answear = answear + found[i+1][-1]
     print(answear)
-    
-
-    
