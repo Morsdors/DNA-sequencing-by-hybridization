@@ -1,0 +1,89 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+
+
+if __name__ == '__main__':
+    first_multiple_input = input().rstrip().split()
+
+    keyLength = first_multiple_input[0]
+
+    length = int(first_multiple_input[1])
+
+    second_multiple_input = input().rstrip().split()
+
+    keyStart = second_multiple_input[0]
+
+    start = second_multiple_input[1]
+
+    third_multiple_input = input().rstrip().split()
+
+    keyProbe = third_multiple_input[0]
+
+    probe = int(third_multiple_input[1])
+
+    oligonucleotides = []
+
+    for _ in range(length - probe + 1):
+        oligonucleotides_item = input()
+        oligonucleotides.append(oligonucleotides_item)
+        
+    olis = oligonucleotides
+    olis.remove(start)
+    reps = []
+    itr = iter(olis)
+    for ol in olis:
+        rep = 0
+        for ol1 in olis:
+            if (ol[1:] == ol1[:-1]):
+                rep = rep + 1
+        #print(rep)
+        reps.append(rep)
+    #print ("to byly repy")
+    # for rep in reps:
+    #     print =(rep)
+            
+    
+    #print(start)
+    found = [start]
+    
+    def search(found, olis, first):
+        max = 0
+        maxol = ""
+        for ol, rep in zip(olis, reps):
+            if (first[1:] == ol[:-1]):
+                #print(ol)
+                #print("rep", rep)
+                if(rep>=max):
+                    max = rep
+                    maxol = ol
+                #print("max", max, "maxol", maxol)
+        if(maxol != ""):
+            found.append(maxol)
+            olis.remove(maxol)
+            return found, olis, maxol
+        else:
+            #print("nie znaleziono, wiec found[-1] -> found", found)
+            olis.append(found[-1])
+            found.remove(found[-1])
+            return found, olis, first
+
+    
+    found, olis, st = search(found, olis, start)
+    while(olis != []):
+        #print(olis, st, found)
+        found, olis, st = search(found, olis, st)
+        
+    
+    answear = start
+    for i in range(len(found)-1):
+        answear = answear + found[i+1][-1]
+    print(answear)
+    
+
+    
